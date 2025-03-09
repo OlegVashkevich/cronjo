@@ -1,0 +1,38 @@
+{
+  "name": "olegv/cronjo",
+  "description": "Library for scheduling your job by cron",
+  "keywords": [
+    "library",
+    "cron",
+    "crontab",
+    "job",
+    "lightweight",
+    "dependency-free",
+    "scheduling"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Oleg Vashkevich",
+      "email": "ugluk@tut.by"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "OlegV\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  },
+  "require-dev": {
+    "phpstan/phpstan": "^2.1",
+    "phpunit/phpunit": "^11.0",
+    "phpstan/phpstan-strict-rules": "^2.0"
+  },
+  "require": {
+    "php": "^8.2"
+  }
+}
