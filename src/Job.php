@@ -2,6 +2,7 @@
 
 namespace OlegV\Cronjo;
 
+use Exception;
 use Stringable;
 
 class Job implements Stringable
@@ -14,22 +15,13 @@ class Job implements Stringable
     public const FRIDAY = 5;
     public const SATURDAY = 6;
 
-    public const OFF_TAG = '#off# ';
-
-    /**
-     * @var non-empty-string
-     */
-    private string $binary = PHP_BINARY;
-
     /**
      * @param  string  $command  shell command or php script
      * @param  string  $expression  cron expression representing the frequency of job execution
-     * @param  bool  $off  commented job
      */
     public function __construct(
         public string $command = '',
         public string $expression = '* * * * *',
-        public bool $off = false,
     ) {}
 
     /**
@@ -37,15 +29,7 @@ class Job implements Stringable
      */
     public function __toString(): string
     {
-        return $this->getOffTag().$this->expression.$this->getBinary().$this->command;
-    }
-
-    /**
-     * @return string
-     */
-    private function getOffTag(): string
-    {
-        return $this->off ? self::OFF_TAG : '';
+        return $this->expression.' '.$this->command;
     }
 
     /**
@@ -53,37 +37,18 @@ class Job implements Stringable
      *
      * @param  string  $job
      * @return $this
+     * @throws Exception
      */
     public function parseJob(string $job): static
     {
-        $data = explode($this->getBinary(), $job);
-        if (str_contains($data[0], self::OFF_TAG)) {
-            $this->expression = str_replace(self::OFF_TAG, '', $data[0]);
-            $this->off = true;
+        $space = ' ';
+        $parts = preg_split('/\s+/', $job);
+        if (is_array($parts)) {
+            $this->expression = implode($space, array_slice($parts, 0, 5));
+            $this->command = implode($space, array_splice($parts, 5));
         } else {
-            $this->expression = $data[0];
-            $this->off = false;
+            throw new Exception('Job parse error');
         }
-        $this->command = $data[1];
-
-        return $this;
-    }
-
-    /**
-     * @return non-empty-string
-     */
-    public function getBinary(): string
-    {
-        return ' '.$this->binary.' ';
-    }
-
-    /**
-     * @param  non-empty-string  $binary
-     * @return $this
-     */
-    public function setBinary(string $binary): static
-    {
-        $this->binary = $binary;
 
         return $this;
     }

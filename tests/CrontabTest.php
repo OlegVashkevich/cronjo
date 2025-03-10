@@ -28,9 +28,10 @@ class CrontabTest extends TestCase
     public function testAdd(): void
     {
         $crontab = new Crontab($this->app_name);
-        $crontab->addJob((new Job('job1.php'))->daily());
-        $crontab->addJob(new Job('job2.php'));
-        $crontab->addJob(new Job('job2.php'));
+        $crontab->removeJobs();
+        $crontab->addJob((new Job('php job1.php'))->daily());
+        $crontab->addJob(new Job('php job2.php'));
+        $crontab->addJob(new Job('php job2.php'));
         $crontab->save();
 
         $jobs = $crontab->getJobs();
@@ -39,8 +40,8 @@ class CrontabTest extends TestCase
         }
         $crontab->removeJobs();
         $this->assertSame([
-            '0 0 * * * '.PHP_BINARY.' job1.php',
-            '* * * * * '.PHP_BINARY.' job2.php',
+            '0 0 * * * php job1.php',
+            '* * * * * php job2.php',
         ], $jobs);
     }
 
@@ -61,11 +62,11 @@ class CrontabTest extends TestCase
         }
         $crontab->removeJobs();
         $this->assertSame([
-            '0 0 * * * '.PHP_BINARY.' echo "Hello World"',
-            '0 * * * * '.PHP_BINARY.' echo "Hello World2"',
-            '*/30 * * * * '.PHP_BINARY.' echo "Hello World3"',
-            '1,3,6 * * * * '.PHP_BINARY.' echo "Hello World4"',
-            '30 19 7,17 * * '.PHP_BINARY.' echo "Hello World5"',
+            '0 0 * * * echo "Hello World"',
+            '0 * * * * echo "Hello World2"',
+            '*/30 * * * * echo "Hello World3"',
+            '1,3,6 * * * * echo "Hello World4"',
+            '30 19 7,17 * * echo "Hello World5"',
         ], $jobs);
     }
 
@@ -133,11 +134,11 @@ class CrontabTest extends TestCase
         $crontab->addJob(new Job('job2.php'));
         $crontab->addJob(new Job('job3.php'));
         $crontab->save();
-        echo $crontab->show();
+        //echo $crontab->show();
         $out = PHP_EOL;
-        $out .= '1 | 0 0 * * * '.PHP_BINARY.' job1.php'.PHP_EOL;
-        $out .= '2 | * * * * * '.PHP_BINARY.' job2.php'.PHP_EOL;
-        $out .= '3 | * * * * * '.PHP_BINARY.' job3.php'.PHP_EOL;
+        $out .= '1 | 0 0 * * * job1.php'.PHP_EOL;
+        $out .= '2 | * * * * * job2.php'.PHP_EOL;
+        $out .= '3 | * * * * * job3.php'.PHP_EOL;
         $out .= PHP_EOL;
         $this->assertEquals($out, $crontab->show());
         $crontab->removeJobs();

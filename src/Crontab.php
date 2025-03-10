@@ -166,6 +166,16 @@ class Crontab
     }
 
     /**
+     * @return Job[]
+     * @throws Exception
+     */
+    public function getJobs(): array
+    {
+        $this->loadJobs();
+        return $this->jobs;
+    }
+
+    /**
      * Checking the operating system
      *
      * @return void
@@ -178,16 +188,6 @@ class Crontab
                 'Your operating system does not support this command.',
             );
         }
-    }
-
-    /**
-     * @return Job[]
-     * @throws Exception
-     */
-    public function getJobs(): array
-    {
-        $this->loadJobs();
-        return $this->jobs;
     }
 
     /**
@@ -272,13 +272,20 @@ class Crontab
      * Gets the contents of crontab
      *
      * @return string
+     * @throws Exception
      */
     private function getCrontabContent(): string
     {
         try {
-            $content = (string)shell_exec('crontab -l');
+            $content = shell_exec('crontab -l');
+            if (is_null($content)) {
+                //create
+                exec('echo "" | crontab -');
+                return '';
+            }
+            $content = (string)$content;
         } catch (Exception $e) {
-            return $e->getMessage();
+            throw new Exception($e->getMessage());
         }
 
         return $content;

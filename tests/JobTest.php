@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use Exception;
 use OlegV\Cronjo\Job;
 use PHPUnit\Framework\TestCase;
 
@@ -14,12 +15,15 @@ class JobTest extends TestCase
         $this->assertObjectHasProperty('command', $Job);
     }
 
+    /**
+     * @throws Exception
+     */
     public function testParser(): void
     {
         $Job = new Job();
-        $Job->parseJob('* * * * * '.PHP_BINARY.' test');
+        $Job->parseJob('* * * * *  php test');
         $this->assertEquals('* * * * *', $Job->expression);
-        $this->assertEquals('test', $Job->command);
+        $this->assertEquals('php test', $Job->command);
     }
 
     public function testEveryMinute(): void
@@ -377,12 +381,5 @@ class JobTest extends TestCase
         $Job = new Job();
         $Job->yearlyOn(7, 17, '19:30');
         $this->assertEquals('30 19 17 7 *', $Job->expression);
-    }
-
-    public function testBinary(): void
-    {
-        $Job = new Job('test');
-        $Job->setBinary('bin/sh');
-        $this->assertEquals('* * * * * bin/sh test', (string)$Job);
     }
 }
