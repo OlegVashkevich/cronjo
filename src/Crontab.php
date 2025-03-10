@@ -62,6 +62,7 @@ class Crontab
         foreach ($this->hidden_jobs as $job) {
             if (str_contains($job->command, $this->hidden_job_comment.' init')) {
                 $path = str_replace(' '.$this->hidden_job_comment.' init', '', $job->command);
+                $path = str_replace('php ', '', $path);
             }
         }
         if (isset($path) && file_exists($path)) {
