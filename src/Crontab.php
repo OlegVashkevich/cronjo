@@ -43,7 +43,7 @@ class Crontab
     public function init(string $schedule_path): void
     {
         if (file_exists($schedule_path)) {
-            $this->addJob((new Job($schedule_path.' '.$this->hidden_job_comment.' init'))->hourly());
+            $this->addJob((new Job('php '.$schedule_path.' '.$this->hidden_job_comment.' init'))->hourly());
             //if (count($this->hidden_jobs) > 0) {
             $this->save();
             //}

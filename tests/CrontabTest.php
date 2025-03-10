@@ -67,6 +67,7 @@ class CrontabTest extends TestCase
             '*/30 * * * * echo "Hello World3"',
             '1,3,6 * * * * echo "Hello World4"',
             '30 19 7,17 * * echo "Hello World5"',
+            '30 19 1 1 2,5 echo "Hello World6"',
         ], $jobs);
     }
 
