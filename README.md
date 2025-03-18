@@ -10,7 +10,7 @@ Library for scheduling your job by cron
 
 ## Install
 ```shell
-composer requier olegv/cronjo
+composer require olegv/cronjo
 ```
 ## Usage
 ### Schedule
