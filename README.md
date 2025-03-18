@@ -99,6 +99,7 @@ composer require olegv/cronjo
 | ->fridays();                     | Limit the task to Friday.                                |
 | ->saturdays();                   | Limit the task to Saturday.                              |
 | ->days(array\|mixed);            | Limit the task to specific days.                         |
+| ->at('13:00');                   | Run the task at 13:00.                                   |
 
 ### Crontab management
 now you can manage cron jobs for your app(APP_NAME) in file `path_to/schedule.php`
