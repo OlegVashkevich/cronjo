@@ -163,6 +163,7 @@ class Crontab
         $this->checkOS();
         $this->content = $this->getCrontabContent();
         $this->content = $this->cleanSection();
+        $this->jobs = [];
         $this->saveTab();
     }
 
